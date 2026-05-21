@@ -7,11 +7,22 @@ if not exist "yt-dlp.exe" (
     cls
 )
 
+if not exist "ffmpeg.exe" (
+    echo [!] Локальный FFmpeg не найден (нужен для MP3). 
+    echo [!] Скачиваю облегченную сборку, подожди чуть-чуть...
+    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip' -OutFile 'ffmpeg.zip'"
+    echo [!] Распаковываю файлы...
+    powershell -Command "Expand-Archive -Path 'ffmpeg.zip' -DestinationPath 'ffmpeg_temp' -Force"
+    powershell -Command "Get-ChildItem -Path 'ffmpeg_temp' -Filter 'ffmpeg.exe' -Recurse | Move-Item -Destination '.'"
+    powershell -Command "Remove-Item -Path 'ffmpeg.zip', 'ffmpeg_temp' -Recurse -Force"
+    cls
+)
+
 :loop
 cls
-echo ================================
-echo     УНИВЕРСАЛЬНЫЙ УСТАНОВЩИК 
-echo ================================
+echo =======================================================
+echo     УНИВЕРСАЛЬНЫЙ СКАЧИВАЛЬЩИК (ПОЛНАЯ АВТОНОМНОСТЬ)
+echo =======================================================
 echo.
 
 set /p url="Вставь ссылку на ТРЕК или ПЛЕЙЛИСТ и нажми Enter: "

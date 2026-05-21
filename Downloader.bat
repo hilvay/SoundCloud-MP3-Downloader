@@ -7,22 +7,26 @@ if not exist "yt-dlp.exe" (
     cls
 )
 
-if not exist "ffmpeg.exe" (
-    echo [!] Локальный FFmpeg не найден (нужен для MP3). 
-    echo [!] Скачиваю облегченную сборку, подожди чуть-чуть...
-    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip' -OutFile 'ffmpeg.zip'"
-    echo [!] Распаковываю файлы...
-    powershell -Command "Expand-Archive -Path 'ffmpeg.zip' -DestinationPath 'ffmpeg_temp' -Force"
-    powershell -Command "Get-ChildItem -Path 'ffmpeg_temp' -Filter 'ffmpeg.exe' -Recurse | Move-Item -Destination '.'"
-    powershell -Command "Remove-Item -Path 'ffmpeg.zip', 'ffmpeg_temp' -Recurse -Force"
-    cls
-)
+ffmpeg -version >nul 2>&1
+if errorlevel 1 goto install_ffmpeg
+goto loop
+
+:install_ffmpeg
+echo [!] В системе не найден FFmpeg (нужен для конвертации в MP3).
+echo [!] Устанавливаю его автоматически через winget...
+echo.
+winget install Gyan.FFmpeg -e --accept-package-agreements --accept-source-agreements
+echo.
+echo [+] Установка запущена.
+echo [!] ВАЖНО: Перезапусти батник, чтобы система увидела FFmpeg!
+pause
+exit
 
 :loop
 cls
-echo ================================
-echo     УНИВЕРСАЛЬНЫЙ УСТАНОВЩИК
-echo ================================
+echo =================================
+echo      УНИВЕРСАЛЬНЫЙ УСТАНОВЩИК
+echo =================================
 echo.
 
 set /p url="Вставь ссылку на ТРЕК или ПЛЕЙЛИСТ и нажми Enter: "

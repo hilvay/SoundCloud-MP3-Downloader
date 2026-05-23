@@ -1,5 +1,6 @@
 # Универсальный загрузчик SoundCloud 🎵
 ![Интерфейс скрипта](image.png)
+If SoundCloud is blocked in your region, please use a VPN or configure a Proxy in the app settings to bypass network restrictions.
 
 Простой скрипт (.bat) для Windows, который скачивает музыку и плейлисты из SoundCloud в формате MP3 в максимальном качестве. 
 
